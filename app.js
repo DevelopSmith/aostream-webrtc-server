@@ -6,7 +6,7 @@ var options = {
   key: fs.readFileSync('./fake-keys/privatekey.pem'),
   cert: fs.readFileSync('./fake-keys/certificate.pem')
 };
-var serverPort = (process.env.PORT  || 4443);
+var serverPort = (process.env.PORT  || 5000);
 var https = require('https');
 var http = require('http');
 var server;
@@ -15,7 +15,10 @@ if (process.env.LOCAL) {
 } else {
   server = http.createServer(app);
 }
-var io = require('socket.io')(server);
+var io = require('socket.io')(server, {
+  pingTimeout: 30000,
+  pingInterval: 30000
+});
 
 var roomList = {};
 
