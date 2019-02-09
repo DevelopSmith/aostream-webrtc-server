@@ -15,7 +15,10 @@ if (process.env.LOCAL) {
 } else {
   server = http.createServer(app);
 }
-var io = require('socket.io')(server);
+var io = require('socket.io')(server, {
+  pingTimeout: 30000,
+  pingInterval: 30000
+});
 
 var roomList = {};
 
