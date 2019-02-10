@@ -10,11 +10,8 @@ var serverPort = (process.env.PORT  || 5000);
 var https = require('https');
 var http = require('http');
 var server;
-if (process.env.LOCAL) {
-  server = https.createServer(options, app);
-} else {
-  server = http.createServer(app);
-}
+
+server = http.createServer(app);
 var io = require('socket.io')(server, {
   pingTimeout: 30000,
   pingInterval: 30000
@@ -28,9 +25,6 @@ app.get('/', function(req, res){
 });
 server.listen(serverPort, function(){
   console.log('server up and running at %s port', serverPort);
-  if (process.env.LOCAL) {
-    open('https://localhost:' + serverPort)
-  }
 });
 
 function socketIdsInRoom(name) {
@@ -48,6 +42,7 @@ function socketIdsInRoom(name) {
 
 io.on('connection', function(socket){
   console.log('connection');
+
   socket.on('disconnect', function(){
     console.log('disconnect');
     if (socket.room) {
